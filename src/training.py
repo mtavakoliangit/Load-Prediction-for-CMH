@@ -119,38 +119,6 @@ class Training:
         indices = range(82, 1800, 24)
         results_dir = 'Results'
 
-        data = ReadData('SourceData/HourlyConsumptionAgg.csv')
-        residential_load = data.aggregate_category_data('Residential')
-        commercial_load = data.aggregate_category_data('Commercial')
-        industrial_load = data.aggregate_category_data('Industrial')
-
-        # Filter the rows where ' ReadValue ' is less than 100kWh
-        commercial_load = commercial_load[commercial_load[' ReadValue '] > 100]
-        industrial_load = industrial_load[industrial_load[' ReadValue '] > 100]
-        residential_load = residential_load[residential_load[' ReadValue '] > 100]
-
-        # Rename the ' ReadValue ' column in commercial_load to 'Commercial'
-        commercial_load.rename(columns={' ReadValue ': 'Commercial'}, inplace=True)
-
-        # Rename the ' ReadValue ' column in residential_load to 'Residential'
-        residential_load.rename(columns={' ReadValue ': 'Residential'}, inplace=True)
-
-        # Rename the ' ReadValue ' column in industrial_load to 'Industrial'
-        industrial_load.rename(columns={' ReadValue ': 'Industrial'}, inplace=True)
-
-        # Merge residential_load and commercial_load and industrial_load on the 'DateTime' column
-        load = residential_load.merge(commercial_load, on='DateTime', how='inner')
-        load = load.merge(industrial_load, on='DateTime', how='inner')
-
-        # We choose certain categories of our targets
-        categories = ['Residential', 'Commercial', 'Industrial']
-
-        # Sum up all categories
-        load['ResCom'] = load['Residential'] + load['Commercial']
-        load['ResComInd'] = load['ResCom'] + load['Industrial']
-
-        weather_pars = ['mslPres', 'windSpd', 'dewPt', 'relHum', 'temp']
-
         for category in ['Residential', 'Commercial', 'Industrial', 'ResCom', 'ResComInd']:
             for lag in [72]:
                 for pred_hr in [72]:
