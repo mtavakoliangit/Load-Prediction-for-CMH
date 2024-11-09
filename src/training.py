@@ -15,8 +15,7 @@ import random
 from sklearn.metrics import mean_squared_error, r2_score
 
 class Training:
-    def __init__(self, lag):
-        self.lag = lag
+    def __init__(self):
         self.model_dir = 'Models'
 
     def lr_schedule(self, epoch):
@@ -53,10 +52,10 @@ class Training:
         ann_model.compile(optimizer=optimizer, loss='mean_squared_error', metrics=['mean_squared_error'])
 
         # Train the ANN model with the learning rate scheduler
-        history = ann_model.fit(X, y, epochs=100, batch_size=self.lag, validation_data=(X_valid, y_valid), callbacks=[lr_scheduler], verbose=1)
+        history = ann_model.fit(X, y, epochs=100, batch_size=lag, validation_data=(X_valid, y_valid), callbacks=[lr_scheduler], verbose=1)
 
         """Save the model:"""
-        model_path = self.model_dir + '/' + model_name + str(weather_lag) + str(pred_hr) + str(lag) + '.keras'
+        model_path = self.model_dir + '/' + model_name + '.keras'
         ann_model.save(model_path)
 
         return ann_model
