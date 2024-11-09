@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""prep_data.ipynb"""
+"""prep_data.py"""
 
 import pandas as pd
 import matplotlib.pyplot as plt
