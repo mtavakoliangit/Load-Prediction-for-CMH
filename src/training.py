@@ -60,7 +60,7 @@ class Training:
 
         return ann_model
 
-    def dev_and_evaluate_models_for_categories():
+    def dev_and_evaluate_models_for_categories(self):
         indices = range(82, 1800, 24)
         results_dir = 'Results'
 
