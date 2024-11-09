@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""prediction.ipynb"""
+"""prediction.py"""
 
 import pandas as pd
 import matplotlib.pyplot as plt
