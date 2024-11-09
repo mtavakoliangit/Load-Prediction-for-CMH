@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+"""main.ipynb"""
+
 from src.training import Training
 
 def main():
