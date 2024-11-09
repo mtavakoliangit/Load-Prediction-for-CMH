@@ -23,7 +23,7 @@ class Training:
         drop_rate = 0.9
         return initial_lr * (drop_rate ** epoch)
 
-    def develop_ann_model(self, X, y, X_valid, y_valid, model_name):
+    def develop_ann_model(self, X, y, X_valid, y_valid, model_name, lag):
         # Set the random seed for reproducibility
         seed = 142
         np.random.seed(seed)
