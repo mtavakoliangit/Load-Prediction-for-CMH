@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""main.ipynb"""
+"""monthly_training.py"""
 
 from src.training import Training
 
