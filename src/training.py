@@ -122,7 +122,7 @@ class Training:
 
         model_name = category + '_deepFuture_' + str(lag) + str(weather_lag) + str(pred_hr)
 
-        return X, y, X_valid, y_valid, model_name
+        return X, y, X_valid, y_valid, model_name, timeseries_test
 
     def dev_and_evaluate_models_for_categories(self):
         indices = range(82, 1800, 24)
@@ -132,7 +132,7 @@ class Training:
             for lag in [72]:
                 for pred_hr in [72]:
                     for weather_lag in [6]:
-                        X, y, X_valid, y_valid, model_name = self.build_model_feed(category, lag, weather_lag, pred_hr)
+                        X, y, X_valid, y_valid, model_name, timeseries_test = self.build_model_feed(category, lag, weather_lag, pred_hr)
                         ann_model = self.develop_ann_model(X, y, X_valid, y_valid, model_name, lag)
 
                         # Predict on test set
