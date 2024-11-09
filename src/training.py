@@ -69,8 +69,11 @@ class Training:
 
         # Create the new folder for the newly developed model
         os.makedirs(new_folder_path, exist_ok=True)
+        print(f'Folder path {new_folder_path} created for the new model.')
+        
         model_path = new_folder_path + '/' + model_name + '.keras'
         ann_model.save(model_path)
+        print(f'New model saved in path {model_path}.')
 
         return ann_model
 
