@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 """training.ipynb"""
 
+from read_data import ReadData
+from prep_data import PrepDataForTraining
+from prediction import PredictionAndQAPerformance
+
+# Ignore all warning messages
+import warnings
+warnings.filterwarnings("ignore")
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
