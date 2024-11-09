@@ -24,7 +24,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 
 class Training:
     def __init__(self):
-        self.model_dir = 'Models'
+        self.model_dir = '../Models'
 
     def lr_schedule(self, epoch):
         initial_lr = 0.001
