@@ -80,7 +80,7 @@ def main():
                     model_name = category + '_deepFuture_' + str(lag) + str(weather_lag) + str(pred_hr)
 
                     trained_model = Training()
-                    ann_model = trained_model.develop_ann_model(X, y, X_valid, y_valid, model_name)
+                    ann_model = trained_model.develop_ann_model(X, y, X_valid, y_valid, model_name, lag)
 
                     # Predict on test set
                     test_predictions_ann = ann_model.predict(timeseries_test.drop(columns=[category]))
