@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""read_data.ipynb"""
+"""read_data.py"""
 
 import pandas as pd
 import matplotlib.pyplot as plt
