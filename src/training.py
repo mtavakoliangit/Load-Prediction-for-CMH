@@ -63,7 +63,13 @@ class Training:
         history = ann_model.fit(X, y, epochs=1, batch_size=lag, validation_data=(X_valid, y_valid), callbacks=[lr_scheduler], verbose=1)
 
         """Save the model:"""
-        model_path = self.model_dir + '/' + model_name + '.keras'
+        # Create a folder name based on the current datetime
+        folder_name = datetime.now().strftime('%Y-%m-%d_%H-%M')
+        new_folder_path = os.path.join(self.model_dir, folder_name)
+
+        # Create the new folder for the newly developed model
+        os.makedirs(new_folder_path, exist_ok=True)
+        model_path = new_folder_path + '/' + model_name + '.keras'
         ann_model.save(model_path)
 
         return ann_model
