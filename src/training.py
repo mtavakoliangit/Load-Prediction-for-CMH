@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """training.ipynb"""
 
-from read_data import ReadData
-from prep_data import PrepDataForTraining
-from prediction import PredictionAndQAPerformance
+from src.read_data import ReadData
+from src.prep_data import PrepDataForTraining
+from src.prediction import PredictionAndQAPerformance
 
 # Ignore all warning messages
 import warnings
