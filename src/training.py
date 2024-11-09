@@ -114,6 +114,8 @@ class Training:
 
                     for lag in [72]:
 
+                        results_dir = '../Results'
+
                         generated_timeseries = PrepDataForTraining(weather_pars)
                         timeseries_train, timeseries_valid, timeseries_test, norm_scaler_output, std_scaler_output, testing_data, testing_head_index = generated_timeseries.generate_timeseries(load, 2011, datetime.now().year+1, selected_columns, lag, weather_lag, pred_hr, category)
                         # Separate input and output features
