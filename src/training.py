@@ -114,6 +114,11 @@ class Training:
         generated_timeseries = PrepDataForTraining(weather_pars)
         timeseries_train, timeseries_valid, timeseries_test, norm_scaler_output, std_scaler_output, testing_data, testing_head_index = generated_timeseries.generate_timeseries(load, 2011, datetime.now().year+1, selected_columns, lag, weather_lag, pred_hr, category)
         
+        # Make some variables global which will be used by other functions too
+        self.timeseries_test = timeseries_test
+        self.load = load
+        self.testing_head_index = testing_head_index
+        
         # Separate input and output features
         X = timeseries_train.drop(columns=[category]).values
         y = timeseries_train[category].values
@@ -122,7 +127,7 @@ class Training:
 
         model_name = category + '_deepFuture_' + str(lag) + str(weather_lag) + str(pred_hr)
 
-        return X, y, X_valid, y_valid, model_name, timeseries_test, load, testing_head_index
+        return X, y, X_valid, y_valid, model_name
 
     def dev_and_evaluate_models_for_categories(self):
         indices = range(82, 1800, 24)
@@ -132,11 +137,11 @@ class Training:
             for lag in [72]:
                 for pred_hr in [72]:
                     for weather_lag in [6]:
-                        X, y, X_valid, y_valid, model_name, timeseries_test, load, testing_head_index = self.build_model_feed(category, lag, weather_lag, pred_hr)
+                        X, y, X_valid, y_valid, model_name = self.build_model_feed(category, lag, weather_lag, pred_hr)
                         ann_model = self.develop_ann_model(X, y, X_valid, y_valid, model_name, lag)
 
                         # Predict on test set
-                        test_predictions_ann = ann_model.predict(timeseries_test.drop(columns=[category]))
+                        test_predictions_ann = ann_model.predict(self.timeseries_test.drop(columns=[category]))
 
                         # Plot actual vs predicted values for test set
                         plt.figure(figsize=(10, 6))
@@ -149,7 +154,7 @@ class Training:
                         plt.savefig(results_dir + '/' + 'pred_' + model_name + '.png')
                         plt.close()
 
-                        prediction = PredictionAndQAPerformance(load, testing_head_index, results_dir)
+                        prediction = PredictionAndQAPerformance(self.load, self.testing_head_index, results_dir)
 
                         for idx in indices:
                             prediction.print_rand_sample(timeseries_test, ann_model, model_name, idx, lag, pred_hr, norm_scaler_output, std_scaler_output, testing_data, category)
