@@ -24,7 +24,6 @@ import random
 from sklearn.metrics import mean_squared_error, r2_score
 
 def main():
-
     indices = range(82, 1800, 24)
     results_dir = 'Results'
 
@@ -80,7 +79,7 @@ def main():
 
                     model_name = category + '_deepFuture_' + str(lag) + str(weather_lag) + str(pred_hr)
 
-                    trained_model = Training(lag)
+                    trained_model = Training()
                     ann_model = trained_model.develop_ann_model(X, y, X_valid, y_valid, model_name)
 
                     # Predict on test set
