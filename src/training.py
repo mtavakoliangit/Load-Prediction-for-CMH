@@ -70,7 +70,7 @@ class Training:
 
     def dev_and_evaluate_models_for_categories(self):
         indices = range(82, 1800, 24)
-        results_dir = 'Results'
+        results_dir = '../Results'
 
         data = ReadData('../SourceData/HourlyConsumptionAgg.csv')
         residential_load = data.aggregate_category_data('Residential')
