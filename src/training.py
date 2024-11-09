@@ -68,6 +68,53 @@ class Training:
 
         return ann_model
 
+    def build_model_feed(self, category, lag, weather_lag, pred_hr):
+        data = ReadData('SourceData/HourlyConsumptionAgg.csv')
+        residential_load = data.aggregate_category_data('Residential')
+        commercial_load = data.aggregate_category_data('Commercial')
+        industrial_load = data.aggregate_category_data('Industrial')
+
+        # Filter the rows where ' ReadValue ' is less than 100kWh
+        commercial_load = commercial_load[commercial_load[' ReadValue '] > 100]
+        industrial_load = industrial_load[industrial_load[' ReadValue '] > 100]
+        residential_load = residential_load[residential_load[' ReadValue '] > 100]
+
+        # Rename the ' ReadValue ' column in commercial_load to 'Commercial'
+        commercial_load.rename(columns={' ReadValue ': 'Commercial'}, inplace=True)
+
+        # Rename the ' ReadValue ' column in residential_load to 'Residential'
+        residential_load.rename(columns={' ReadValue ': 'Residential'}, inplace=True)
+
+        # Rename the ' ReadValue ' column in industrial_load to 'Industrial'
+        industrial_load.rename(columns={' ReadValue ': 'Industrial'}, inplace=True)
+
+        # Merge residential_load and commercial_load and industrial_load on the 'DateTime' column
+        load = residential_load.merge(commercial_load, on='DateTime', how='inner')
+        load = load.merge(industrial_load, on='DateTime', how='inner')
+
+        # We choose certain categories of our targets
+        categories = ['Residential', 'Commercial', 'Industrial']
+
+        # Sum up all categories
+        load['ResCom'] = load['Residential'] + load['Commercial']
+        load['ResComInd'] = load['ResCom'] + load['Industrial']
+
+        weather_pars = ['mslPres', 'windSpd', 'dewPt', 'relHum', 'temp']
+        selected_columns = ['Date', 'MonthDay', 'hour_sin', 'hour_cos', 'day_sin', 'day_cos', 'WORKING'] + weather_pars + [category]
+
+        generated_timeseries = PrepDataForTraining(weather_pars)
+        timeseries_train, timeseries_valid, timeseries_test, norm_scaler_output, std_scaler_output, testing_data, testing_head_index = generated_timeseries.generate_timeseries(load, 2011, datetime.now().year+1, selected_columns, lag, weather_lag, pred_hr, category)
+        
+        # Separate input and output features
+        X = timeseries_train.drop(columns=[category]).values
+        y = timeseries_train[category].values
+        X_valid = timeseries_valid.drop(columns=[category]).values
+        y_valid = timeseries_valid[category].values
+
+        model_name = category + '_deepFuture_' + str(lag) + str(weather_lag) + str(pred_hr)
+
+        return X, y, X_valid, y_valid, model_name
+
     def dev_and_evaluate_models_for_categories(self):
         indices = range(82, 1800, 24)
         results_dir = 'Results'
@@ -105,25 +152,10 @@ class Training:
         weather_pars = ['mslPres', 'windSpd', 'dewPt', 'relHum', 'temp']
 
         for category in ['Residential', 'Commercial', 'Industrial', 'ResCom', 'ResComInd']:
-
-            selected_columns = ['Date', 'MonthDay', 'hour_sin', 'hour_cos', 'day_sin', 'day_cos', 'WORKING'] + weather_pars + [category]
-
-            for weather_lag in [6]:
-
+            for lag in [72]:
                 for pred_hr in [72]:
-
-                    for lag in [72]:
-
-                        generated_timeseries = PrepDataForTraining(weather_pars)
-                        timeseries_train, timeseries_valid, timeseries_test, norm_scaler_output, std_scaler_output, testing_data, testing_head_index = generated_timeseries.generate_timeseries(load, 2011, datetime.now().year+1, selected_columns, lag, weather_lag, pred_hr, category)
-                        # Separate input and output features
-                        X = timeseries_train.drop(columns=[category]).values
-                        y = timeseries_train[category].values
-                        X_valid = timeseries_valid.drop(columns=[category]).values
-                        y_valid = timeseries_valid[category].values
-
-                        model_name = category + '_deepFuture_' + str(lag) + str(weather_lag) + str(pred_hr)
-
+                    for weather_lag in [6]:
+                        X, y, X_valid, y_valid, model_name = self.build_model_feed(category, lag, weather_lag, pred_hr)
                         ann_model = self.develop_ann_model(X, y, X_valid, y_valid, model_name, lag)
 
                         # Predict on test set
