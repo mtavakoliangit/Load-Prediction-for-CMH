@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""training.ipynb"""
+"""training.py"""
 
 from src.read_data import ReadData
 from src.prep_data import PrepDataForTraining
