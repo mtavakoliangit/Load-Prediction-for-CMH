@@ -159,7 +159,7 @@ class Training:
                         prediction = PredictionAndQAPerformance(self.load, self.testing_head_index, results_dir)
 
                         for idx in indices:
-                            prediction.print_rand_sample(self.timeseries_test, ann_model, model_name, idx, lag, pred_hr, self.norm_scaler_output, self.std_scaler_output, testing_data, category)
+                            prediction.print_rand_sample(self.timeseries_test, ann_model, model_name, idx, lag, pred_hr, self.norm_scaler_output, self.std_scaler_output, self.testing_data, category)
 
                         # Create empty DataFrames
                         benchmark_columns = ['index', 'Date', 'Hour', 'Temp', 'WORKING'] + [f'actual_{i}' for i in range(1, pred_hr + 1)] + [f'pred_{i}' for i in range(1, pred_hr + 1)]
