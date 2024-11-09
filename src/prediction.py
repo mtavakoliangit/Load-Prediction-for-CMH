@@ -102,7 +102,7 @@ class PredictionAndQAPerformance:
 
         # Title and save the plot
         plt.title('Actual vs Pred Load ({}) and Temp. - {}'.format(category, start_date))
-        plt.savefig(results_dir + '/' + model_name + '_rand_pred_withTemp' + str(weather_lag) + str(pred_hr) + str(lag) + str(idx) + '.png')
+        plt.savefig(results_dir + '/' + model_name + '_rand_pred_withTemp' + str(idx) + '.png')
         plt.close()
 
     def evaluate_preds_at_diff_hrs(self, timeseries, model, idx, lag, pred_hr, norm_scaler_output, std_scaler_output, testing_data, category):
