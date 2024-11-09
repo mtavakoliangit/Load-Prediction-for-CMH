@@ -78,7 +78,7 @@ def main():
                     X_valid = timeseries_valid.drop(columns=[category]).values
                     y_valid = timeseries_valid[category].values
 
-                    model_name = category + '_deepFuture_' + str(weather_lag) + str(pred_hr) + str(self.lag)
+                    model_name = category + '_deepFuture_' + str(weather_lag) + str(pred_hr) + str(lag)
 
                     trained_model = Training(lag)
                     ann_model = trained_model.develop_ann_model(X, y, X_valid, y_valid, model_name)
