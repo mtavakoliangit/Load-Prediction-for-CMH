@@ -24,7 +24,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 
 class Training:
     def __init__(self):
-        self.model_dir = '../Models'
+        self.model_dir = 'Models'
 
     def lr_schedule(self, epoch):
         initial_lr = 0.001
@@ -70,7 +70,7 @@ class Training:
 
     def dev_and_evaluate_models_for_categories(self):
         indices = range(82, 1800, 24)
-        results_dir = '../Results'
+        results_dir = 'Results'
 
         data = ReadData('../SourceData/HourlyConsumptionAgg.csv')
         residential_load = data.aggregate_category_data('Residential')
@@ -113,8 +113,6 @@ class Training:
                 for pred_hr in [72]:
 
                     for lag in [72]:
-
-                        results_dir = '../Results'
 
                         generated_timeseries = PrepDataForTraining(weather_pars)
                         timeseries_train, timeseries_valid, timeseries_test, norm_scaler_output, std_scaler_output, testing_data, testing_head_index = generated_timeseries.generate_timeseries(load, 2011, datetime.now().year+1, selected_columns, lag, weather_lag, pred_hr, category)
