@@ -72,7 +72,7 @@ class Training:
         indices = range(82, 1800, 24)
         results_dir = 'Results'
 
-        data = ReadData('../SourceData/HourlyConsumptionAgg.csv')
+        data = ReadData('SourceData/HourlyConsumptionAgg.csv')
         residential_load = data.aggregate_category_data('Residential')
         commercial_load = data.aggregate_category_data('Commercial')
         industrial_load = data.aggregate_category_data('Industrial')
