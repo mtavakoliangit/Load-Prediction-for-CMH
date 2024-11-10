@@ -120,6 +120,7 @@ class Training:
         self.testing_head_index = testing_head_index
         self.norm_scaler_output = norm_scaler_output
         self.std_scaler_output = std_scaler_output
+        self.testing_data = testing_data
         
         # Separate input and output features
         X = timeseries_train.drop(columns=[category]).values
@@ -169,7 +170,7 @@ class Training:
 
                         for idx in tqdm(indices):
                             # Get actual, predicted, residual values, and the month
-                            actuals, preds, residuals, month, date, hour, temp, working = prediction.evaluate_preds_at_diff_hrs(timeseries_test, ann_model, idx, lag, pred_hr, self.norm_scaler_output, self.std_scaler_output, self.testing_data, category)
+                            actuals, preds, residuals, month, date, hour, temp, working = prediction.evaluate_preds_at_diff_hrs(self.timeseries_test, ann_model, idx, lag, pred_hr, self.norm_scaler_output, self.std_scaler_output, self.testing_data, category)
 
                             # Create new row for model_df
                             model_row = {
