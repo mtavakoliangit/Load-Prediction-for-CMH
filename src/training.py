@@ -61,7 +61,7 @@ class Training:
         ann_model.compile(optimizer=optimizer, loss='mean_squared_error', metrics=['mean_squared_error'])
 
         # Train the ANN model with the learning rate scheduler
-        history = ann_model.fit(X, y, epochs=1, batch_size=lag, validation_data=(X_valid, y_valid), callbacks=[lr_scheduler], verbose=1)
+        history = ann_model.fit(X, y, epochs=100, batch_size=lag, validation_data=(X_valid, y_valid), callbacks=[lr_scheduler], verbose=1)
 
         """Save the model:"""
         # Create a folder name based on the current datetime
