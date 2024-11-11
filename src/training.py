@@ -25,6 +25,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 class Training:
     def __init__(self):
         self.model_dir = 'Models'
+        self.results_dir = 'Results'
 
     def lr_schedule(self, epoch):
         initial_lr = 0.001
@@ -64,7 +65,7 @@ class Training:
 
         """Save the model:"""
         # Create a folder name based on the current datetime
-        folder_name = datetime.now().strftime('%Y-%m-%d_%H-%M')
+        folder_name = datetime.now().strftime('%Y-%m-%d')
         new_folder_path = os.path.join(self.model_dir, folder_name)
 
         # Create the new folder for the newly developed model
@@ -78,7 +79,7 @@ class Training:
         return ann_model
 
     def build_model_feed(self, category, lag, weather_lag, pred_hr):
-        data = ReadData('SourceData/HourlyConsumptionAgg.csv')
+        data = ReadData('OOP/SourceData/HourlyConsumptionAgg.csv')
         residential_load = data.aggregate_category_data('Residential')
         commercial_load = data.aggregate_category_data('Commercial')
         industrial_load = data.aggregate_category_data('Industrial')
@@ -134,9 +135,14 @@ class Training:
 
     def dev_and_evaluate_models_for_categories(self):
         indices = range(82, 1800, 24)
-        results_dir = 'Results'
 
         for category in ['Residential', 'Commercial', 'Industrial', 'ResCom', 'ResComInd']:
+
+            results_dir = os.path.join(self.results_dir+'/'+category, datetime.now().strftime('%Y-%m-%d'))
+            # Create the new folder for the newly generated results
+            os.makedirs(results_dir, exist_ok=True)
+            print(f'Folder path {results_dir} created to save the new results.')
+
             for lag in [72]:
                 for pred_hr in [72]:
                     for weather_lag in [6]:
