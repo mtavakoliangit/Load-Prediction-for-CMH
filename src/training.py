@@ -79,7 +79,7 @@ class Training:
         return ann_model
 
     def build_model_feed(self, category, lag, weather_lag, pred_hr):
-        data = ReadData('OOP/SourceData/HourlyConsumptionAgg.csv')
+        data = ReadData('SourceData/HourlyConsumptionAgg.csv')
         residential_load = data.aggregate_category_data('Residential')
         commercial_load = data.aggregate_category_data('Commercial')
         industrial_load = data.aggregate_category_data('Industrial')
